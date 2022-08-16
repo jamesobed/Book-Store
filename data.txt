@@ -1,0 +1,22 @@
+{
+  "author":"obed",
+  "age":321,
+  "email": "obe@gm.lk",
+  "password":"12345",
+  "address":"Badore Ajah"
+}
+
+
+{  "email": "obe@gm.lk",
+  "password":"12345"
+}
+
+{
+  "name": "Obed"
+  "isPublished": true,
+  "serialNumber": 321
+}
+
+
+real all books
+localhost:3000/books/read
