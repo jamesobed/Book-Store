@@ -12,7 +12,7 @@ import {
 } from "../controller/bookController";
 
 router.post("/create", auth, createBooks);
-router.get("/read", getBooks);
+router.get("/", getBooks);
 router.get("/read/:id", getSingleBook);
 router.patch("/update/:id", auth, updateBook);
 router.delete("/delete/:id", auth, deleteBook);
