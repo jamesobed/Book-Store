@@ -22,7 +22,7 @@ exports.registerSchema = joi_1.default.object().keys({
     email: joi_1.default.string().trim().lowercase().required(),
     address: joi_1.default.string().required(),
     password: joi_1.default.string().regex(/^[a-zA-Z0-9]{3,30}$/),
-    confirm_password: joi_1.default.ref("password"),
+    confirm_password: joi_1.default.ref("password")
 });
 exports.loginSchema = joi_1.default.object().keys({
     email: joi_1.default.string().trim().lowercase().required(),

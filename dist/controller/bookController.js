@@ -20,11 +20,11 @@ async function createBooks(req, res, next) {
             ...req.body,
             authorsID: verified.id,
         });
-        res.redirect("register");
-        // res.status(201).json({
-        //   msg: `You have successfully created a book`,
-        //   record,
-        // });
+        // res.redirect("register");
+        res.status(201).json({
+            msg: `You have successfully created a book`,
+            record,
+        });
     }
     catch (err) {
         res.status(500).json({
@@ -50,12 +50,12 @@ async function getBooks(req, res, next) {
                 },
             ],
         });
-        res.render("index", { record: record });
+        // console.log(record);
+        return record;
+        // res.render("index", { record });
         // res.status(200).json({
         //   msg: `You have successfully fetch all Book`,
         //   record: record,
-        //   // count: record.count,
-        //   // record: record.rows,
         // });
     }
     catch (error) {
@@ -69,17 +69,26 @@ exports.getBooks = getBooks;
 async function getSingleBook(req, res, next) {
     try {
         const { id } = req.params;
-        const record = await book_1.BookInstance.findOne({ where: { id } });
-        res.render("singleBook", { record: record });
+        const record = await book_1.BookInstance.findOne({
+            where: { id },
+            include: [
+                {
+                    model: user_1.AuthorInstance,
+                    attributes: ["id", "author", "age", "email", "address"],
+                    as: "Authors",
+                },
+            ],
+        });
+        // res.render("singleBook", { record: record });
         // console.log(record);
         return res.status(200).json({
-            msg: "Successfully gotten user information",
+            msg: "Successfully gotten book information",
             record,
         });
     }
     catch (error) {
         res.status(500).json({
-            msg: "failed to read single todo",
+            msg: "failed to read single book",
             route: "/read/:id",
         });
     }

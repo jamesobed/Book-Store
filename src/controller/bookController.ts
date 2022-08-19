@@ -24,12 +24,12 @@ export async function createBooks(
       authorsID: verified.id,
     });
 
-    res.redirect("register");
+    // res.redirect("register");
 
-    // res.status(201).json({
-    //   msg: `You have successfully created a book`,
-    //   record,
-    // });
+    res.status(201).json({
+      msg: `You have successfully created a book`,
+      record,
+    });
   } catch (err) {
     res.status(500).json({
       msg: "failed to create",
@@ -58,14 +58,13 @@ export async function getBooks(
         },
       ],
     });
-
-    res.render("index", { record: record });
+    // console.log(record);
+    return record;
+    // res.render("index", { record });
 
     // res.status(200).json({
     //   msg: `You have successfully fetch all Book`,
     //   record: record,
-    //   // count: record.count,
-    //   // record: record.rows,
     // });
   } catch (error) {
     res.status(500).json({
@@ -82,18 +81,27 @@ export async function getSingleBook(
 ) {
   try {
     const { id } = req.params;
-    const record = await BookInstance.findOne({ where: { id } });
+    const record = await BookInstance.findOne({
+      where: { id },
+      include: [
+        {
+          model: AuthorInstance,
+          attributes: ["id", "author", "age", "email", "address"],
+          as: "Authors",
+        },
+      ],
+    });
 
-    res.render("singleBook", { record: record });
+    // res.render("singleBook", { record: record });
     // console.log(record);
 
     return res.status(200).json({
-      msg: "Successfully gotten user information",
+      msg: "Successfully gotten book information",
       record,
     });
   } catch (error) {
     res.status(500).json({
-      msg: "failed to read single todo",
+      msg: "failed to read single book",
       route: "/read/:id",
     });
   }

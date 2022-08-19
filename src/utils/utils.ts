@@ -18,7 +18,7 @@ export const registerSchema = Joi.object().keys({
   email: Joi.string().trim().lowercase().required(),
   address: Joi.string().required(),
   password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
-  confirm_password: Joi.ref("password"),
+  confirm_password: Joi.ref("password")
 });
 
 export const loginSchema = Joi.object().keys({

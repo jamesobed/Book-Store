@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUsers = exports.LogOut = exports.LoginUser = exports.RegisterUser = void 0;
+exports.renderUserDashBoard = exports.deleteUser = exports.updateUser = exports.defaultView = exports.getUser = exports.getUsers = exports.LogOut = exports.LoginUser = exports.RegisterUser = void 0;
 const uuid_1 = require("uuid");
 const utils_1 = require("../utils/utils");
 const user_1 = require("../model/user");
@@ -35,11 +35,11 @@ async function RegisterUser(req, res, next) {
             password: passwordHash,
             address: req.body.address,
         });
-        res.redirect("/registerAuthor");
-        // res.status(201).json({
-        //   msg: "You have successfully created a user",
-        //   record: record,
-        // });
+        // res.redirect("/");
+        res.status(201).json({
+            msg: "You have successfully created a user",
+            record: record,
+        });
     }
     catch (err) {
         console.log(err);
@@ -92,7 +92,8 @@ async function LoginUser(req, res, next) {
                 sameSite: "strict",
                 secure: process.env.NODE_ENV === "production",
             });
-            res.redirect("/register");
+            res.redirect("/author/dashboard");
+            // res.status(200).json({ title: "registerd successfully" });
         }
     }
     catch (err) {
@@ -105,9 +106,17 @@ async function LoginUser(req, res, next) {
 }
 exports.LoginUser = LoginUser;
 async function LogOut(req, res, next) {
-    // res.clearCookie("token");
-    // res.status(200).json({ msg: "You have successfully logged out" });
-    res.redirect("/login");
+    res.cookie("token", "", {
+        maxAge: 0,
+        sameSite: "strict",
+        httpOnly: true,
+    });
+    res.cookie("id", "", {
+        maxAge: 0,
+        sameSite: "strict",
+        httpOnly: true,
+    });
+    res.redirect("/");
 }
 exports.LogOut = LogOut;
 async function getUsers(req, res, next) {
@@ -125,12 +134,12 @@ async function getUsers(req, res, next) {
                 },
             ],
         });
-        res.status(200).render("authors", { record });
-        // res.status(200).json({
-        //   msg: "You have successfully fetch all books",
-        //   count: record.count,
-        //   record: record.rows,
-        // });
+        // res.status(200).render("authors", { record });
+        res.status(200).json({
+            msg: "You have successfully fetch all authors",
+            count: record.count,
+            record: record.rows,
+        });
     }
     catch (error) {
         res.status(500).json({
@@ -140,3 +149,147 @@ async function getUsers(req, res, next) {
     }
 }
 exports.getUsers = getUsers;
+async function getUser(req, res, next) {
+    try {
+        const id = req.params.id;
+        const record = await user_1.AuthorInstance.findOne({
+            where: { id },
+            include: [
+                {
+                    model: book_1.BookInstance,
+                    attributes: ["id", "name", "isPublished", "serialNumber"],
+                    as: "Books",
+                },
+            ],
+        });
+        // res.status(200).render("author", { record });
+        // res.status(200).json({
+        //   msg: "You have successfully fetch author",
+        //   record,
+        // });
+        return record;
+    }
+    catch (error) {
+        res.status(500).json({
+            msg: "failed to get user",
+            route: "/read",
+        });
+    }
+}
+exports.getUser = getUser;
+async function defaultView(req, res, next) {
+    try {
+        const userId = req.cookies.id;
+        const author = (await user_1.AuthorInstance.findOne({
+            where: { id: userId },
+            include: [{ model: book_1.BookInstance, as: "Books" }],
+        }));
+        res.render("dashboard", { author: author });
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).json({
+            msg: "failed to login",
+            route: "/login",
+        });
+    }
+}
+exports.defaultView = defaultView;
+async function updateUser(req, res, next) {
+    try {
+        const id = req.params.id;
+        const { email, password } = req.body;
+        const record = await user_1.AuthorInstance.findOne({
+            where: {
+                id,
+            },
+        });
+        if (!record) {
+            return res.status(404).json({ msg: "User not found" });
+        }
+        const updatedrecord = await record.update({ email, password });
+        res.status(200).json({
+            msg: "You have successfully updated a book",
+            record,
+        });
+    }
+    catch (error) { }
+    {
+        res.status(500).json({
+            msg: "failed to update",
+            route: "/update/:id",
+        });
+    }
+}
+exports.updateUser = updateUser;
+async function deleteUser(req, res, next) {
+    try {
+        const id = req.params.id;
+        const record = await user_1.AuthorInstance.destroy({
+            where: { id },
+        });
+        res.status(200).json({
+            msg: "You have successfully deleted a book",
+            record,
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            msg: "failed to delete",
+            route: "/delete",
+        });
+    }
+}
+exports.deleteUser = deleteUser;
+async function renderUserDashBoard(req, res, next) {
+    const id = req.cookies.id;
+    try {
+        const record = await user_1.AuthorInstance.findOne({
+            where: { id },
+            include: [
+                {
+                    model: book_1.BookInstance,
+                    as: "Books",
+                },
+            ],
+        });
+        res.status(200).render("author", { record });
+        // res.status(200).json({
+        //   msg: "You have successfully fetch authors book",
+        //   record,
+        // });
+    }
+    catch (error) {
+        res.status(500).json({
+            msg: "failed to get details",
+            route: "/login",
+        });
+    }
+}
+exports.renderUserDashBoard = renderUserDashBoard;
+/*
+to get update a user:
+- get the user id
+- get the user details --> email and password
+- check if the user exists --> if not return error from userinstance using findOne method
+- declare a new object to store the updated user details
+
+
+to delete a user:
+- get the user id
+-  await userinstance.destroy({where: {id}})
+- return the deleted success message
+- if error return error message
+
+to get all users:
+- await userinstance.findAndCountAll({include: [{model: bookinstance, as: 'Books'}]})
+- return the users and count
+
+to renderlogin page:
+- get id = req.cookies.id
+- try:
+  + record = await userinstance.findOne({where: {id, include: [{model: bookinstance, as: 'Books'}]}})
+  + res.render('dashboard', {record})
+- catch:
+  + if error return error message
+*/

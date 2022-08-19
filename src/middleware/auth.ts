@@ -10,6 +10,7 @@ export async function auth(
 ) {
   try {
     // const authorization = req.headers.authorization;
+
     const authorization = req.cookie.token;
     if (!authorization) {
       res.status(401).json({

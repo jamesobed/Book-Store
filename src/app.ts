@@ -7,7 +7,6 @@ import db from "./config/database.config";
 
 import userRouter from "./routes/user";
 import bookRouter from "./routes/book";
-import pageRouter from "./routes/pages";
 import cors from "cors";
 db.sync()
   .then(() => {
@@ -28,7 +27,7 @@ const myCors = {
 app.use(cors(myCors));
 
 // view engine setup
-// app.set("views", path.join(__dirname, "..", "views"));
+app.set("views", path.join(__dirname, "..", "views"));
 app.set("view engine", "ejs");
 
 app.use(logger("dev"));
@@ -37,23 +36,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "..", "public")));
 
-app.get("/login", (req: Request, res: Response) => {
-  res.render("./login");
-});
-app.get("/register", (req: Request, res: Response) => {
-  res.render("./registerAuthor");
-});
-app.get("/create", (req: Request, res: Response) => {
-  res.render("./createBook");
-});
-
-app.get("/single", (req: Request, res: Response) => {
-  res.render("./Home");
-});
-
-app.use("/", userRouter);
-app.use("/", bookRouter);
-app.use("/", pageRouter);
+// set up routes
+app.use("/author", userRouter);
+app.use("/book", bookRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
