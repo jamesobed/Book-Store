@@ -21,7 +21,7 @@ async function createBooks(req, res, next) {
             authorsID: verified.id,
         });
         // res.redirect("register");
-        res.status(201).json({
+        return res.status(201).json({
             msg: `You have successfully created a book`,
             record,
         });
@@ -116,7 +116,7 @@ async function updateBook(req, res, next) {
             serialNumber: serialNumber,
             authorsID: authorsID,
         });
-        res.status(200).json({
+        return res.status(200).json({
             msg: "You have successfully updated your todo",
             updatedrecord,
         });

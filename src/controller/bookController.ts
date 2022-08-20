@@ -26,7 +26,7 @@ export async function createBooks(
 
     // res.redirect("register");
 
-    res.status(201).json({
+    return res.status(201).json({
       msg: `You have successfully created a book`,
       record,
     });
@@ -134,7 +134,7 @@ export async function updateBook(
       serialNumber: serialNumber,
       authorsID: authorsID,
     });
-    res.status(200).json({
+    return res.status(200).json({
       msg: "You have successfully updated your todo",
       updatedrecord,
     });

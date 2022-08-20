@@ -9,15 +9,14 @@ export async function auth(
   next: NextFunction
 ) {
   try {
-    // const authorization = req.headers.authorization;
-
-    const authorization = req.cookie.token;
+    const authorization = req.headers.authorization;
+    const cookie = req.cookies.token;
     if (!authorization) {
       res.status(401).json({
         Error: "Kindly sign in as a user",
       });
     }
-    const token = authorization?.slice(7, authorization.length) as string;
+    const token = authorization?.slice(7, authorization.length) as string || cookie;
 
     let verified = jwt.verify(token, secret);
 
@@ -39,6 +38,7 @@ export async function auth(
     req.user = verified;
     next();
   } catch (error) {
+    console.log(error);
     res.status(403).json({
       Error: "User not logged in",
     });

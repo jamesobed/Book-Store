@@ -154,11 +154,13 @@ tr > :first-child {
   <div class="table-horizontal-container">
     <table class="unfixed-table" >
       <thead>
-        <tr><th>Book ID</th><th>Book Title</th><th>Published</th><th>Serial Number</th><th>Date Created</th><th>Update</th><th>Remove</th></tr>
+        <tr><th>Author ID</th><th>Book Title</th><th>Published</th><th>Serial Number</th><th>Book ID</th><th>Update</th><th>Remove</th></tr>
       </thead>
+     <%record.map(item =>{ %> 
       <tbody>
-        <tr><th>Column one</th><td>Column two</td><td>Column three</td><td>Column four</td><td>Column four</td><td><button type="button" class="btn btn-info">Edit</button></td><td><button type="button" class="btn btn-danger">Delete</button></td></tr> 
+        <tr><th><%= item.id %>  </th><td><%= item.Books.name  %> </td><td><%= item.Books.isPublished  %> </td><td><%= item.Books.serialNumber  %></td><td><%= item.Books.id %></td><td><button type="button" class="btn btn-info">Edit</button></td><td><button type="button" class="btn btn-danger">Delete</button></td></tr> 
       </tbody>
+      <%})%>
       
       <tfoot>
         <tr><td>Footer</td><td>Footer</td><td>Footer</td><td>Footer</td><td>Footer</td><td></td><td></td></tr>

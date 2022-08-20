@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.renderUserDashBoard = exports.deleteUser = exports.updateUser = exports.defaultView = exports.getUser = exports.getUsers = exports.LogOut = exports.LoginUser = exports.RegisterUser = void 0;
+exports.deleteUser = exports.updateUser = exports.getUser = exports.getUsers = exports.LogOut = exports.renderUserDashBoard = exports.LoginUser = exports.RegisterUser = void 0;
 const uuid_1 = require("uuid");
 const utils_1 = require("../utils/utils");
 const user_1 = require("../model/user");
@@ -36,7 +36,7 @@ async function RegisterUser(req, res, next) {
             address: req.body.address,
         });
         // res.redirect("/");
-        res.status(201).json({
+        return res.status(201).json({
             msg: "You have successfully created a user",
             record: record,
         });
@@ -79,20 +79,19 @@ async function LoginUser(req, res, next) {
         // }
         if (validUser) {
             res
-                .status(200)
                 .cookie("token", token, {
                 maxAge: 1000 * 60 * 60 * 24 * 7,
                 httpOnly: true,
                 sameSite: "strict",
-                secure: process.env.NODE_ENV === "production",
+                // secure: process.env.NODE_ENV === "production",
             })
-                .cookie("user", User.id, {
+                .cookie("id", id, {
                 maxAge: 1000 * 60 * 60 * 24 * 7,
                 httpOnly: true,
                 sameSite: "strict",
-                secure: process.env.NODE_ENV === "production",
+                // secure: process.env.NODE_ENV === "production",
             });
-            res.redirect("/author/dashboard");
+            return res.redirect("/author/dash");
             // res.status(200).json({ title: "registerd successfully" });
         }
     }
@@ -105,6 +104,33 @@ async function LoginUser(req, res, next) {
     }
 }
 exports.LoginUser = LoginUser;
+async function renderUserDashBoard(req, res, next) {
+    const id = req.cookies.id;
+    try {
+        const record = await user_1.AuthorInstance.findOne({
+            where: { id },
+            include: [
+                {
+                    model: book_1.BookInstance,
+                    as: "Books",
+                },
+            ],
+        });
+        console.log("line 138", record);
+        return res.render("dashBoard");
+        // res.status(200).json({
+        //   msg: "You have successfully fetch authors book",
+        //   record,
+        // });
+    }
+    catch (error) {
+        res.status(500).json({
+            msg: "failed to get details",
+            route: "/login",
+        });
+    }
+}
+exports.renderUserDashBoard = renderUserDashBoard;
 async function LogOut(req, res, next) {
     res.cookie("token", "", {
         maxAge: 0,
@@ -116,7 +142,7 @@ async function LogOut(req, res, next) {
         sameSite: "strict",
         httpOnly: true,
     });
-    res.redirect("/");
+    return res.redirect("/");
 }
 exports.LogOut = LogOut;
 async function getUsers(req, res, next) {
@@ -135,7 +161,7 @@ async function getUsers(req, res, next) {
             ],
         });
         // res.status(200).render("authors", { record });
-        res.status(200).json({
+        return res.status(200).json({
             msg: "You have successfully fetch all authors",
             count: record.count,
             record: record.rows,
@@ -177,24 +203,6 @@ async function getUser(req, res, next) {
     }
 }
 exports.getUser = getUser;
-async function defaultView(req, res, next) {
-    try {
-        const userId = req.cookies.id;
-        const author = (await user_1.AuthorInstance.findOne({
-            where: { id: userId },
-            include: [{ model: book_1.BookInstance, as: "Books" }],
-        }));
-        res.render("dashboard", { author: author });
-    }
-    catch (err) {
-        console.log(err);
-        res.status(500).json({
-            msg: "failed to login",
-            route: "/login",
-        });
-    }
-}
-exports.defaultView = defaultView;
 async function updateUser(req, res, next) {
     try {
         const id = req.params.id;
@@ -208,7 +216,7 @@ async function updateUser(req, res, next) {
             return res.status(404).json({ msg: "User not found" });
         }
         const updatedrecord = await record.update({ email, password });
-        res.status(200).json({
+        return res.status(200).json({
             msg: "You have successfully updated a book",
             record,
         });
@@ -228,7 +236,7 @@ async function deleteUser(req, res, next) {
         const record = await user_1.AuthorInstance.destroy({
             where: { id },
         });
-        res.status(200).json({
+        return res.status(200).json({
             msg: "You have successfully deleted a book",
             record,
         });
@@ -241,32 +249,6 @@ async function deleteUser(req, res, next) {
     }
 }
 exports.deleteUser = deleteUser;
-async function renderUserDashBoard(req, res, next) {
-    const id = req.cookies.id;
-    try {
-        const record = await user_1.AuthorInstance.findOne({
-            where: { id },
-            include: [
-                {
-                    model: book_1.BookInstance,
-                    as: "Books",
-                },
-            ],
-        });
-        res.status(200).render("author", { record });
-        // res.status(200).json({
-        //   msg: "You have successfully fetch authors book",
-        //   record,
-        // });
-    }
-    catch (error) {
-        res.status(500).json({
-            msg: "failed to get details",
-            route: "/login",
-        });
-    }
-}
-exports.renderUserDashBoard = renderUserDashBoard;
 /*
 to get update a user:
 - get the user id

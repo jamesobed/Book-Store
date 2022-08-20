@@ -43,8 +43,7 @@ export async function RegisterUser(
     });
 
     // res.redirect("/");
-
-    res.status(201).json({
+    return res.status(201).json({
       msg: "You have successfully created a user",
       record: record,
     });
@@ -96,26 +95,55 @@ export async function LoginUser(
 
     if (validUser) {
       res
-        .status(200)
         .cookie("token", token, {
           maxAge: 1000 * 60 * 60 * 24 * 7,
           httpOnly: true,
           sameSite: "strict",
-          secure: process.env.NODE_ENV === "production",
+          // secure: process.env.NODE_ENV === "production",
         })
-        .cookie("user", User.id, {
+        .cookie("id", id, {
           maxAge: 1000 * 60 * 60 * 24 * 7,
           httpOnly: true,
           sameSite: "strict",
-          secure: process.env.NODE_ENV === "production",
+          // secure: process.env.NODE_ENV === "production",
         });
-      res.redirect("/author/dashboard");
+      return res.redirect("/author/dash");
       // res.status(200).json({ title: "registerd successfully" });
     }
   } catch (err) {
     console.log(err);
     res.status(500).json({
       msg: "failed to login",
+      route: "/login",
+    });
+  }
+}
+
+export async function renderUserDashBoard(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const id = req.cookies.id;
+  try {
+    const record = await AuthorInstance.findOne({
+      where: { id },
+      include: [
+        {
+          model: BookInstance,
+          as: "Books",
+        },
+      ],
+    });
+    console.log("line 138", record);
+    return res.render("dashBoard");
+    // res.status(200).json({
+    //   msg: "You have successfully fetch authors book",
+    //   record,
+    // });
+  } catch (error) {
+    res.status(500).json({
+      msg: "failed to get details",
       route: "/login",
     });
   }
@@ -132,7 +160,7 @@ export async function LogOut(req: Request, res: Response, next: NextFunction) {
     sameSite: "strict",
     httpOnly: true,
   });
-  res.redirect("/");
+  return res.redirect("/");
 }
 
 export async function getUsers(
@@ -156,7 +184,7 @@ export async function getUsers(
     });
     // res.status(200).render("authors", { record });
 
-    res.status(200).json({
+    return res.status(200).json({
       msg: "You have successfully fetch all authors",
       count: record.count,
       record: record.rows,
@@ -188,34 +216,12 @@ export async function getUser(req: Request, res: Response, next: NextFunction) {
     //   msg: "You have successfully fetch author",
     //   record,
     // });
+
     return record;
-    
   } catch (error) {
     res.status(500).json({
       msg: "failed to get user",
       route: "/read",
-    });
-  }
-}
-
-export async function defaultView(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  try {
-    const userId = req.cookies.id;
-    const author = (await AuthorInstance.findOne({
-      where: { id: userId },
-      include: [{ model: BookInstance, as: "Books" }],
-    })) as unknown as { [key: string]: string };
-
-    res.render("dashboard", { author: author });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      msg: "failed to login",
-      route: "/login",
     });
   }
 }
@@ -240,7 +246,7 @@ export async function updateUser(
     }
     const updatedrecord = await record.update({ email, password });
 
-    res.status(200).json({
+    return res.status(200).json({
       msg: "You have successfully updated a book",
       record,
     });
@@ -263,7 +269,7 @@ export async function deleteUser(
     const record = await AuthorInstance.destroy({
       where: { id },
     });
-    res.status(200).json({
+    return res.status(200).json({
       msg: "You have successfully deleted a book",
       record,
     });
@@ -271,35 +277,6 @@ export async function deleteUser(
     res.status(500).json({
       msg: "failed to delete",
       route: "/delete",
-    });
-  }
-}
-
-export async function renderUserDashBoard(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  const id = req.cookies.id;
-  try {
-    const record = await AuthorInstance.findOne({
-      where: { id },
-      include: [
-        {
-          model: BookInstance,
-          as: "Books",
-        },
-      ],
-    });
-    res.status(200).render("author", { record });
-    // res.status(200).json({
-    //   msg: "You have successfully fetch authors book",
-    //   record,
-    // });
-  } catch (error) {
-    res.status(500).json({
-      msg: "failed to get details",
-      route: "/login",
     });
   }
 }

@@ -9,14 +9,14 @@ const secret = process.env.JWT_SECRET;
 const user_1 = require("../model/user");
 async function auth(req, res, next) {
     try {
-        // const authorization = req.headers.authorization;
-        const authorization = req.cookie.token;
+        const authorization = req.headers.authorization;
+        const cookie = req.cookies.token;
         if (!authorization) {
             res.status(401).json({
                 Error: "Kindly sign in as a user",
             });
         }
-        const token = authorization?.slice(7, authorization.length);
+        const token = authorization?.slice(7, authorization.length) || cookie;
         let verified = jsonwebtoken_1.default.verify(token, secret);
         if (!verified) {
             return res.status(401).json({
@@ -34,6 +34,7 @@ async function auth(req, res, next) {
         next();
     }
     catch (error) {
+        console.log(error);
         res.status(403).json({
             Error: "User not logged in",
         });
