@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <meta http-equiv="refresh" content="10; url='/author/login'" />
+    <title>Logged Out</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+
     <style>
       @import url("https://fonts.googleapis.com/css?family=Poppins");
 
@@ -294,76 +297,35 @@
         box-sizing: border-box;
       }
     </style>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
   </head>
   <body>
-    <!-- Navbar (sit on top) -->
     <div class="w3-top">
       <div class="w3-bar w3-white w3-wide w3-padding w3-card">
-        <a href="/book/test" class="w3-bar-item w3-button"
+        <a href="/test" class="w3-bar-item w3-button"
           ><b>SIR OBED </b>Book Market
         </a>
         <!-- Float links to the right. Hide them on small screens -->
         <div class="w3-right w3-hide-small">
-          <a href="/author/dash" class="w3-bar-item w3-button">My Project</a>
+          <a href="/book/test" class="w3-bar-item w3-button">Projects</a>
+          <a href="#" class="w3-bar-item w3-button">Authors</a>
           <a href="#" class="w3-bar-item w3-button">Contact</a>
-          <a href="/author/logout" class="w3-bar-item w3-button">Signout</a>
+          <a href="/author/login" class="w3-bar-item w3-button">Signin</a>
         </div>
       </div>
     </div>
 
     <div class="wrapper fadeInDown">
       <div id="formContent">
-        <!-- Tabs Titles -->
-        <!-- <h2 class="active">Sign Up</h2>
-        <h2 class="inactive underlineHover">
-          <a href="/author/login">Sign In</a>
-        </h2> -->
-        <h2>Register a Book</h2>
-        <!-- Icon -->
-        <div class="fadeIn first">
-          <!-- <img src="./img_bg_2.jpg" id="icon" alt="User Icon" /> -->
-        </div>
-
         <!-- Login Form -->
-        <form action="/book/create" method="post">
-          <div>
-            <!-- <label for="name">Book Title </label> -->
+        <h2>
+          You have successfully registered kindly login to access your dash
+          board !
+        </h2>
 
-            <input
-              type="text"
-              id="name"
-              class="fadeIn second"
-              name="name"
-              placeholder="Book Title"
-            />
-          </div>
-          <div>
-            <!-- <label for="isPublished">Published </label> -->
-
-            <input
-              type="text"
-              id="isPublished"
-              class="fadeIn second"
-              name="isPublished"
-              placeholder="Published"
-            />
-          </div>
-
-          <div>
-            <!-- <label for="serialNumber">Serial Number </label> -->
-
-            <input
-              type="text"
-              id="serialNumber"
-              class="fadeIn second"
-              name="serialNumber"
-              placeholder="Serial Number"
-            />
-          </div>
-
-          <input type="submit" class="fadeIn fourth" value="CREATE" />
-        </form>
+        <!-- Remind Passowrd -->
+        <div id="formFooter">
+          <a class="underlineHover" href="/author/login">Login</a>
+        </div>
       </div>
     </div>
   </body>

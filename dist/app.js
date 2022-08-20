@@ -36,6 +36,7 @@ app.use(express_1.default.urlencoded({ extended: false }));
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.static(path_1.default.join(__dirname, "..", "public")));
 // set up routes
+// app.use("/", indexRouter);
 app.use("/author", user_1.default);
 app.use("/book", book_1.default);
 // catch 404 and forward to error handler

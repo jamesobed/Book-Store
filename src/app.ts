@@ -37,6 +37,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "..", "public")));
 
 // set up routes
+// app.use("/", indexRouter);
 app.use("/author", userRouter);
 app.use("/book", bookRouter);
 

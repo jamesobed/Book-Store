@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <title>Register</title>
     <style>
       @import url("https://fonts.googleapis.com/css?family=Poppins");
 
@@ -326,13 +326,20 @@
         </div>
 
         <!-- Login Form -->
-        <form>
+        <form action="/author/register" method="post">
           <input
             type="text"
             id="name"
             class="fadeIn second"
-            name="name"
-            placeholder="name"
+            name="author"
+            placeholder="Name"
+          />
+          <input
+            type="text"
+            id="age"
+            class="fadeIn third"
+            name="age"
+            placeholder="Age"
           />
           <input
             type="text"
@@ -340,6 +347,13 @@
             class="fadeIn second"
             name="email"
             placeholder="email"
+          />
+          <input
+            type="text"
+            id="address"
+            class="fadeIn third"
+            name="address"
+            placeholder="Address"
           />
           <input
             type="password"
@@ -352,23 +366,10 @@
             type="password"
             id="password"
             class="fadeIn third"
-            name="confirmPassword"
+            name="confirm_password"
             placeholder="Confirm Password"
           />
-          <input
-            type="text"
-            id="address"
-            class="fadeIn third"
-            name="address"
-            placeholder="Address"
-          />
-          <input
-            type="text"
-            id="age"
-            class="fadeIn third"
-            name="age"
-            placeholder="Age"
-          />
+
           <input type="submit" class="fadeIn fourth" value="Sign Up" />
         </form>
       </div>

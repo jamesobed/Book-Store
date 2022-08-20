@@ -42,11 +42,13 @@ export async function RegisterUser(
       address: req.body.address,
     });
 
-    // res.redirect("/");
-    return res.status(201).json({
-      msg: "You have successfully created a user",
-      record: record,
-    });
+    // res.redirect("/author/register");
+    return res.redirect("/author/success");
+
+    // return res.status(201).json({
+    //   msg: "You have successfully created a user",
+    //   record: record,
+    // });
   } catch (err) {
     console.log(err);
 
@@ -136,12 +138,16 @@ export async function renderUserDashBoard(
       ],
     });
     console.log("line 138", record);
-    return res.render("dashBoard");
+    return res.render("dashBoard", { record });
+
+    // return res.render("dashBoard");
+
     // res.status(200).json({
     //   msg: "You have successfully fetch authors book",
     //   record,
     // });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       msg: "failed to get details",
       route: "/login",
@@ -160,7 +166,7 @@ export async function LogOut(req: Request, res: Response, next: NextFunction) {
     sameSite: "strict",
     httpOnly: true,
   });
-  return res.redirect("/");
+  return res.redirect("/author/refresh");
 }
 
 export async function getUsers(
@@ -202,13 +208,13 @@ export async function getUser(req: Request, res: Response, next: NextFunction) {
     const id = req.params.id;
     const record = await AuthorInstance.findOne({
       where: { id },
-      include: [
-        {
-          model: BookInstance,
-          attributes: ["id", "name", "isPublished", "serialNumber"],
-          as: "Books",
-        },
-      ],
+      // include: [
+      //   {
+      //     model: BookInstance,
+      //     attributes: ["id", "name", "isPublished", "serialNumber"],
+      //     as: "Books",
+      //   },
+      // ],
     });
     // res.status(200).render("author", { record });
 

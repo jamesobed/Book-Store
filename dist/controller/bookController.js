@@ -20,11 +20,11 @@ async function createBooks(req, res, next) {
             ...req.body,
             authorsID: verified.id,
         });
-        // res.redirect("register");
-        return res.status(201).json({
-            msg: `You have successfully created a book`,
-            record,
-        });
+        res.redirect("/book/create");
+        // return res.status(201).json({
+        //   msg: `You have successfully created a book`,
+        //   record,
+        // });
     }
     catch (err) {
         res.status(500).json({
@@ -50,7 +50,7 @@ async function getBooks(req, res, next) {
                 },
             ],
         });
-        // console.log(record);
+        console.log(record);
         return record;
         // res.render("index", { record });
         // res.status(200).json({
@@ -107,7 +107,7 @@ async function updateBook(req, res, next) {
         const record = await book_1.BookInstance.findOne({ where: { id } });
         if (!record) {
             return res.status(404).json({
-                Error: "Cannot find existing todo",
+                Error: "Cannot find existing book",
             });
         }
         const updatedrecord = await record.update({
@@ -117,7 +117,7 @@ async function updateBook(req, res, next) {
             authorsID: authorsID,
         });
         return res.status(200).json({
-            msg: "You have successfully updated your todo",
+            msg: "You have successfully updated your Book",
             updatedrecord,
         });
     }
@@ -135,12 +135,12 @@ async function deleteBook(req, res, next) {
         const record = await book_1.BookInstance.findOne({ where: { id } });
         if (!record) {
             return res.status(404).json({
-                msg: "Cannot find todo",
+                msg: "Cannot find Book",
             });
         }
         const deletedRecord = await record.destroy();
         return res.status(200).json({
-            msg: "Todo deleted successfully",
+            msg: "Book deleted successfully",
             deletedRecord,
         });
     }

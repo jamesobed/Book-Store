@@ -11,23 +11,28 @@ import {
   deleteBook,
 } from "../controller/bookController";
 
-
+// pages for user ejs
+router.get("/create", (req, res) => {
+  res.render("create");
+});
 router.post("/create", auth, createBooks);
 
-router.get('/books', async (req, res, next) => {
-  let record = await getBooks(req, res, next)
+router.get("/create", (req, res, next) => {
+  res.render("create");
+});
+
+router.get("/books", async (req, res, next) => {
+  let record = await getBooks(req, res, next);
   res.status(200).json({
     message: "Successfully fetched all books",
-    record
-    })
-})
+    record,
+  });
+});
 
 router.get("/test", async (req, res, next) => {
   let record = await getBooks(req, res, next);
   res.render("index", { record });
 });
-
-
 
 router.get("/read/:id", getSingleBook);
 router.patch("/update/:id", auth, updateBook);

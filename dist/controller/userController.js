@@ -35,11 +35,12 @@ async function RegisterUser(req, res, next) {
             password: passwordHash,
             address: req.body.address,
         });
-        // res.redirect("/");
-        return res.status(201).json({
-            msg: "You have successfully created a user",
-            record: record,
-        });
+        // res.redirect("/author/register");
+        return res.redirect("/author/success");
+        // return res.status(201).json({
+        //   msg: "You have successfully created a user",
+        //   record: record,
+        // });
     }
     catch (err) {
         console.log(err);
@@ -117,13 +118,15 @@ async function renderUserDashBoard(req, res, next) {
             ],
         });
         console.log("line 138", record);
-        return res.render("dashBoard");
+        return res.render("dashBoard", { record });
+        // return res.render("dashBoard");
         // res.status(200).json({
         //   msg: "You have successfully fetch authors book",
         //   record,
         // });
     }
     catch (error) {
+        console.log(error);
         res.status(500).json({
             msg: "failed to get details",
             route: "/login",
@@ -142,7 +145,7 @@ async function LogOut(req, res, next) {
         sameSite: "strict",
         httpOnly: true,
     });
-    return res.redirect("/");
+    return res.redirect("/author/refresh");
 }
 exports.LogOut = LogOut;
 async function getUsers(req, res, next) {
@@ -180,13 +183,13 @@ async function getUser(req, res, next) {
         const id = req.params.id;
         const record = await user_1.AuthorInstance.findOne({
             where: { id },
-            include: [
-                {
-                    model: book_1.BookInstance,
-                    attributes: ["id", "name", "isPublished", "serialNumber"],
-                    as: "Books",
-                },
-            ],
+            // include: [
+            //   {
+            //     model: BookInstance,
+            //     attributes: ["id", "name", "isPublished", "serialNumber"],
+            //     as: "Books",
+            //   },
+            // ],
         });
         // res.status(200).render("author", { record });
         // res.status(200).json({
