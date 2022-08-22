@@ -1,11 +1,12 @@
+<!-- include header -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Dash Board</title>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dash Board</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
-    <!-- ---------------------bootstrap styles -->
+
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
@@ -19,11 +20,257 @@
       integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
       crossorigin="anonymous"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+      integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+      crossorigin="anonymous"
+    />
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=Barlow&family=PT+Sans&display=swap");
+
+      :root {
+        --dark: #2b2d42;
+        --light: #adb5bd;
+        --border: #dee2e6;
+        --border-btn: #edf2f4;
+      }
+
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      a {
+        text-decoration: none;
+        font-family: "PT Sans", sans-serif;
+      }
+
+      .container {
+        max-width: 1024px;
+        margin: auto;
+      }
+
+      .nav-brand {
+        font-size: 1.5em;
+        font-weight: bold;
+      }
+
+      .d-flex {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .justify-between {
+        justify-content: space-between;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .border-shadow {
+        border: 1px solid var(--border-btn);
+        box-shadow: 1px 3px 10px #e9ecef;
+      }
+
+      .text-dark {
+        color: var(--dark);
+      }
+
+      .inline {
+        display: inline-block;
+      }
+
+      .text-light {
+        color: var(--light);
+      }
+
+      .text-gradient {
+        background: linear-gradient(to right, #8e2de2, #4a00e0);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      #header nav {
+        background-color: #06d6a0;
+        padding: 1em 0;
+        width: 100%;
+      }
+
+      #site-main {
+        margin-top: 6em;
+        font-family: "Barlow", sans-serif;
+      }
+
+      #site-main .container .box-nav > a {
+        font-size: 1em;
+        padding: 0.5em 1em;
+      }
+
+      #site-main .container form {
+        margin: 2em 0;
+      }
+
+      table {
+        border-spacing: 0px;
+        width: 100%;
+      }
+
+      .table td,
+      .table th {
+        padding: 0.75em;
+        vertical-align: top;
+        text-align: center;
+        border-top: 1px solid var(--border);
+      }
+
+      .table td > a.btn {
+        padding: 0.3em 1em;
+        font-size: 1.1em;
+        margin: 0 0.2em;
+      }
+
+      .table tr:hover {
+        background-color: #06d6a0;
+      }
+
+      .table tr:hover td > a {
+        box-shadow: none;
+      }
+
+      .table .thead-dark th {
+        color: #fff;
+        background-color: var(--dark);
+        border-color: #32383e;
+      }
+
+      @media only screen and (max-width: 1024px) {
+        table,
+        thead,
+        tbody,
+        th,
+        td,
+        tr {
+          display: block;
+        }
+
+        thead tr {
+          position: absolute;
+          top: -9999px;
+          left: -9999px;
+        }
+
+        tr {
+          border: 1px solid var(--border);
+        }
+
+        td {
+          border: none;
+          position: relative;
+        }
+      }
+
+      /*  add user & update user template */
+      .form-title {
+        margin-top: 2em;
+      }
+
+      .form-title > h2 {
+        padding: 0.5em 0;
+      }
+
+      .new_user {
+        max-width: 786px;
+        margin: auto;
+      }
+
+      #update_user .form-group,
+      #add_user .form-group {
+        margin: 0.4em 0;
+      }
+
+      #update_user .form-group input[type="text"],
+      #add_user .form-group input[type="text"] {
+        width: 100%;
+        padding: 0.6em 1em;
+        margin: 0.5em 0;
+        border: 1px solid var(--border);
+        font-family: "Barlow", sans-serif;
+        font-size: 1em;
+        border-radius: 0.2em;
+      }
+
+      #update_user .form-group .radio,
+      #add_user .form-group .radio {
+        margin: 1em 2em;
+      }
+
+      /* adding style to radio buttons */
+      .radio input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+      }
+
+      .radio input[type="radio"] + .radio-label:before {
+        content: "";
+        background: var(--border-btn);
+        border-radius: 100%;
+        border: 1px solid var(--border);
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        position: relative;
+        top: -0em;
+        margin-right: 0.5em;
+        vertical-align: top;
+        cursor: pointer;
+        text-align: center;
+        -webkit-transition: all 250ms ease;
+        transition: all 250ms ease;
+      }
+
+      .radio input[type="radio"]:checked + .radio-label:before {
+        background-color: #16db93;
+        box-shadow: inset 0 0 0 4px #e9ecef;
+      }
+
+      .radio input[type="radio"]:focus + .radio-label:before {
+        outline: none;
+        border-color: #16db93;
+      }
+
+      .radio input[type="radio"]:disabled + .radio-label:before {
+        box-shadow: inset 0 0 0 4px #e9ecef;
+        border-color: #b4b4b4;
+        background: #b4b4b4;
+      }
+
+      #update_user .form-group .btn,
+      #add_user .form-group .btn {
+        width: 100%;
+        padding: 0.9em 1em;
+        background-color: #16db93;
+        border: none;
+        font-family: "PT Sans", sans-serif;
+        font-size: 1em;
+        cursor: pointer;
+        border-radius: 0.2em;
+        margin: 0.5em 0;
+      }
+
+      #update_user .form-group .btn:hover,
+      #add_user .form-group .btn:hover {
+        background-color: var(--dark);
+        color: var(--border);
+      }
       .footer {
         margin-top: 0.2rem;
         text-align: center;
         font-size: 1.5rem;
+        color: #e9ecef;
         /* justify-content: space-between; */
       }
       .icons {
@@ -31,151 +278,101 @@
         letter-spacing: 15px;
         align-items: center;
       }
-      /* default styling. Nothing to do with freexing first row and column */
-      main {
-        display: flex;
-      }
-      main > * {
-        border: 1px solid;
-      }
-      table {
-        border-collapse: collapse;
-        font-family: helvetica;
-      }
-      td,
-      th {
-        border: 1px solid;
-        padding: 10px;
-        min-width: 200px;
-        background: white;
-        box-sizing: border-box;
-        text-align: left;
-      }
-      .table-container {
-        position: relative;
-        max-height: 300px;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      }
-
-      thead th {
-        position: -webkit-sticky;
-        position: sticky;
-        top: 0;
-        z-index: 2;
-        background: hsl(20, 50%, 70%);
-      }
-
-      thead th:first-child {
-        left: 0;
-        z-index: 3;
-      }
-
-      tfoot {
-        position: -webkit-sticky;
-        bottom: 0;
-        z-index: 2;
-      }
-
-      tfoot td {
-        position: sticky;
-        bottom: 0;
-        z-index: 2;
-        background: hsl(20, 50%, 70%);
-      }
-
-      tfoot td:first-child {
-        z-index: 3;
-      }
-
-      tbody {
-        overflow: scroll;
-        height: 200px;
-      }
-
-      /* MAKE LEFT COLUMN FIXEZ */
-      tr > :first-child {
-        position: -webkit-sticky;
-        position: sticky;
-        background: hsl(180, 50%, 70%);
-        left: 0;
-      }
-      /* don't do this */
-      tr > :first-child {
-        box-shadow: inset 0px 1px black;
-      }
-      .table {
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        padding: 2rem;
-        font-size: larger;
-      }
     </style>
   </head>
   <body>
-    <div class="w3-top">
-      <div class="w3-bar w3-white w3-wide w3-padding w3-card">
-        <a href="/book/test" class="w3-bar-item w3-button"
-          ><b>SIR OBED </b>Book Market
-        </a>
-        <!-- Float links to the right. Hide them on small screens -->
-        <div class="w3-right w3-hide-small">
-          <a href="/book/test" class="w3-bar-item w3-button">Home</a>
-          <a href="/book/create" class="w3-bar-item w3-button">Register-Book</a>
-          <a href="/author/logout" class="w3-bar-item w3-button">Logout</a>
-          <!-- <a href="/author/login" class="w3-bar-item w3-button">Signin</a> -->
+    <!-- Header -->
+    <header id="header">
+      <nav>
+        <div class="container">
+          <div class="text-center">
+            <!-- <a href="/book/test" class="nav-brand text-dark"
+              >Author Management System</a
+            > -->
+            <a href="/book/test" class="w3-bar-item w3-button">Home</a>
+            <a href="/book/create" class="w3-bar-item w3-button">Profile</a>
+            <a href="/author/logout" class="w3-bar-item w3-button">Logout</a>
+          </div>
         </div>
+      </nav>
+    </header>
+    <!-- /Header -->
+
+    <!-- /include header -->
+
+    <!-- Main Site -->
+    <main id="site-main">
+      <div class="container">
+        <div class="box-nav d-flex justify-between">
+          <a href="/book/create" class="border-shadow">
+            <span class="text-gradient"
+              >New Book <i class="fas fa-book"></i
+            ></span>
+          </a>
+        </div>
+
+        <!-- form handling -->
+        <form action="/book" method="get">
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th>Book ID</th>
+                <th>Book Title</th>
+                <th>Serial Number</th>
+                <th>Status</th>
+                <th>Image</th>
+                <th>update</th>
+                <th>delete</th>
+              </tr>
+            </thead>
+            <%for(let item of record.Books){ %>
+
+            <tbody>
+              <tr>
+                <!-- <td>i + 1</td> -->
+                <th><%= item.id %></th>
+                <td><%= item.name %></td>
+                <td><%= item.isPublished %></td>
+                <td><%= item.serialNumber %></td>
+                <td>
+                  <img src="../images/book.jpeg" alt="House" width="80px" />
+                </td>
+                <td>
+                  <a
+                    href="/book/update/<%= item.id %>"
+                    class="btn border-shadow update"
+                  >
+                    <span class="text-gradient"
+                      ><i class="fas fa-pencil-alt"></i>
+                    </span>
+                  </a>
+                </td>
+                <td>
+                  <form action="/book/delete/<%= item.id %>" method="post">
+                    <span class="text-gradient">
+                      <button class="btn border-shadow update">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </span>
+                  </form>
+                </td>
+              </tr>
+            </tbody>
+            <%}%>
+          </table>
+        </form>
       </div>
-    </div>
+    </main>
+    <!-- /Main Site -->
 
-    <div class="table" id="table">
-      <div class="table-horizontal-container">
-        <table class="unfixed-table">
-          <thead>
-            <tr>
-              <th>Book ID</th>
-              <th>Book Title</th>
-              <th>Published</th>
-              <th>Serial Number</th>
-              <th>Book ID</th>
-              <th>Update</th>
-              <th>Remove</th>
-            </tr>
-          </thead>
-          <%for(let item of record.Books){ %>
-          <tbody>
-            <tr>
-              <th><%= item.id %></th>
-              <td><%= item.name %></td>
-              <td><%= item.isPublished %></td>
-              <td><%= item.serialNumber %></td>
-              <td><%= item.id %></td>
-              <td><button type="button" class="btn btn-info">Edit</button></td>
-              <td>
-                <button type="button" class="btn btn-danger">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-          <%}%>
+    <!-- include footer -->
+    <!-- /include footer -->
 
-          <tfoot>
-            <tr>
-              <td>Footer</td>
-              <td>Footer</td>
-              <td>Footer</td>
-              <td>Footer</td>
-              <td>Footer</td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-    </div>
-
-    <!-- Footer -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+      integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+      crossorigin="anonymous"
+    ></script>
     <footer class="w3-center w3-black w3-padding-16">
       <p>
         Powered by

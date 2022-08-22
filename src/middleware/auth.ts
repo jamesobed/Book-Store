@@ -11,12 +11,11 @@ export async function auth(
   try {
     const authorization = req.headers.authorization;
     const cookie = req.cookies.token;
-    if (!authorization) {
-      res.status(401).json({
-        Error: "Kindly sign in as a user",
-      });
+    if (!authorization && !cookie) {
+      res.redirect("/author/login");
     }
-    const token = authorization?.slice(7, authorization.length) as string || cookie;
+    const token =
+      (authorization?.slice(7, authorization.length) as string) || cookie;
 
     let verified = jwt.verify(token, secret);
 

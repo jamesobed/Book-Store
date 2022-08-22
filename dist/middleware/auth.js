@@ -11,10 +11,8 @@ async function auth(req, res, next) {
     try {
         const authorization = req.headers.authorization;
         const cookie = req.cookies.token;
-        if (!authorization) {
-            res.status(401).json({
-                Error: "Kindly sign in as a user",
-            });
+        if (!authorization && !cookie) {
+            res.redirect("/author/login");
         }
         const token = authorization?.slice(7, authorization.length) || cookie;
         let verified = jsonwebtoken_1.default.verify(token, secret);

@@ -12,9 +12,6 @@ router.get("/create", (req, res) => {
     res.render("create");
 });
 router.post("/create", auth_1.auth, bookController_1.createBooks);
-router.get("/create", (req, res, next) => {
-    res.render("create");
-});
 router.get("/books", async (req, res, next) => {
     let record = await (0, bookController_1.getBooks)(req, res, next);
     res.status(200).json({
@@ -27,6 +24,11 @@ router.get("/test", async (req, res, next) => {
     res.render("index", { record });
 });
 router.get("/read/:id", bookController_1.getSingleBook);
-router.patch("/update/:id", auth_1.auth, bookController_1.updateBook);
+router.get("/update/:id", bookController_1.getSingleBook);
+router.post("/update/:id", auth_1.auth, bookController_1.updateBook);
+// router.post("/delete", (req, res) => {
+//   res.render("dashBoard");
+// });
 router.delete("/delete/:id", auth_1.auth, bookController_1.deleteBook);
+router.post("/delete/:id", auth_1.auth, bookController_1.deleteBook);
 exports.default = router;

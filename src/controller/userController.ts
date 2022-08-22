@@ -137,7 +137,6 @@ export async function renderUserDashBoard(
         },
       ],
     });
-    console.log("line 138", record);
     return res.render("dashBoard", { record });
 
     // return res.render("dashBoard");
@@ -147,11 +146,11 @@ export async function renderUserDashBoard(
     //   record,
     // });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      msg: "failed to get details",
-      route: "/login",
-    });
+    res.redirect("/author/login");
+    // res.status(500).json({
+    //   msg: "failed to get details",
+    //   route: "/login",
+    // });
   }
 }
 
@@ -166,7 +165,11 @@ export async function LogOut(req: Request, res: Response, next: NextFunction) {
     sameSite: "strict",
     httpOnly: true,
   });
-  return res.redirect("/author/refresh");
+  if (req.headers["postman-token"]) {
+    return res.status(200).json({ msg: "You have successfully logout" });
+  } else {
+    return res.redirect("/author/refresh");
+  }
 }
 
 export async function getUsers(

@@ -24,14 +24,16 @@ export async function createBooks(
       authorsID: verified.id,
     });
 
-    res.redirect("/book/create");
-
-    // return res.status(201).json({
-    //   msg: `You have successfully created a book`,
-    //   record,
-    // });
+    if (req.headers["postman-token"]) {
+      return res.status(201).json({
+        msg: `You have successfully created a book`,
+        record,
+      });
+    } else {
+      return res.redirect("/author/dash");
+    }
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       msg: "failed to create",
       route: "/create",
     });
@@ -92,13 +94,14 @@ export async function getSingleBook(
       ],
     });
 
-    // res.render("singleBook", { record: record });
     // console.log(record);
-
-    return res.status(200).json({
-      msg: "Successfully gotten book information",
-      record,
-    });
+    if (req.headers["postman-token"]) {
+      return res.status(200).json({
+        msg: "Successfully gotten book information",
+        record,
+      });
+    }
+    res.render("updateBook", { record: record });
   } catch (error) {
     res.status(500).json({
       msg: "failed to read single book",
@@ -112,8 +115,12 @@ export async function updateBook(
   res: Response,
   next: NextFunction
 ) {
+  console.log("before");
   try {
+    console.log("after");
     const { id } = req.params;
+    console.log(req.body);
+
     const { name, isPublished, serialNumber, authorsID } = req.body;
     const validationResult = updateBookSchema.validate(req.body, options);
     if (validationResult.error) {
@@ -134,10 +141,15 @@ export async function updateBook(
       serialNumber: serialNumber,
       authorsID: authorsID,
     });
-    return res.status(200).json({
-      msg: "You have successfully updated your Book",
-      updatedrecord,
-    });
+
+    if (req.headers["postman-token"]) {
+      return res.status(200).json({
+        msg: "You have successfully updated your Book",
+        updatedrecord,
+      });
+    } else {
+      return res.redirect("/author/dash");
+    }
   } catch (error) {
     res.status(500).json({
       msg: "failed to update",
@@ -160,11 +172,17 @@ export async function deleteBook(
       });
     }
     const deletedRecord = await record.destroy();
-    return res.status(200).json({
-      msg: "Book deleted successfully",
-      deletedRecord,
-    });
+
+    // return res.redirect("/book/delete");
+
+    return res.redirect("/author/dash");
+
+    // return res.status(200).json({
+    //   msg: "Book deleted successfully",
+    //   deletedRecord,
+    // });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       msg: "failed to delete",
       route: "/delete/:id",

@@ -15,11 +15,8 @@ import {
 router.get("/create", (req, res) => {
   res.render("create");
 });
-router.post("/create", auth, createBooks);
 
-router.get("/create", (req, res, next) => {
-  res.render("create");
-});
+router.post("/create", auth, createBooks);
 
 router.get("/books", async (req, res, next) => {
   let record = await getBooks(req, res, next);
@@ -35,7 +32,15 @@ router.get("/test", async (req, res, next) => {
 });
 
 router.get("/read/:id", getSingleBook);
-router.patch("/update/:id", auth, updateBook);
+
+router.get("/update/:id", getSingleBook);
+
+router.post("/update/:id", auth, updateBook);
+
+// router.post("/delete", (req, res) => {
+//   res.render("dashBoard");
+// });
 router.delete("/delete/:id", auth, deleteBook);
+router.post("/delete/:id", auth, deleteBook);
 
 export default router;

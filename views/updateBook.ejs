@@ -322,14 +322,14 @@
         <h2 class="inactive underlineHover">
           <a href="/author/login">Sign In</a>
         </h2> -->
-        <h2>Register a Book</h2>
+        <h2>Update Book</h2>
         <!-- Icon -->
         <div class="fadeIn first">
           <!-- <img src="./img_bg_2.jpg" id="icon" alt="User Icon" /> -->
         </div>
 
         <!-- Login Form -->
-        <form action="/book/create" method="post">
+        <form action="/book/update/<%= record.id %>" method="post">
           <div>
             <!-- <label for="name">Book Title </label> -->
 
@@ -338,6 +338,7 @@
               id="name"
               class="fadeIn second"
               name="name"
+              value="<%= record.name %>"
               placeholder="Book Title"
             />
           </div>
@@ -355,9 +356,14 @@
             <div class="btn">
               <label for="isPublished">Published: </label>
               <label for="true">True</label>
-              <input type="radio" name="isPublished" value="true" />
+              <input type="radio" name="isPublished" value="true" <% if(record.isPublished == true) { %> checked <% } %> />
+
               <label for="false">False</label>
-              <input type="radio" name="isPublished" value="false" />
+              <input type="radio" name="isPublished" value="false" <% if(record.isPublished == false) { %> checked <% } %> />
+            
+              <!-- <input type="radio" name="isPublished" value="true" />
+              <label for="false">False</label>
+              <input type="radio" name="isPublished" value="false" /> -->
             </div>
           </div>
 
@@ -369,13 +375,40 @@
               id="serialNumber"
               class="fadeIn second"
               name="serialNumber"
+              value="<%= record.serialNumber %>"
               placeholder="Serial Number"
             />
           </div>
 
-          <input type="submit" class="fadeIn fourth" value="CREATE" />
+          <input type="submit" class="fadeIn fourth" value="UPDATE" />
         </form>
       </div>
     </div>
   </body>
 </html>
+<script>
+  // let editbook = document.getElementById('editbook');
+  // editbook.addEventListener('submit', function(e) {
+  //   e.preventDefault();
+  //   let formData = new FormData(editbook);
+  //   let url = '/book/update';
+  //   fetch(url, {
+  //     method: 'POST',
+  //     body: formData
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       console.log(data);
+  //       if (data.status == 'success') {
+  //         window.location.href = '/book/test';
+  //       } else {
+  //         alert(data.message);
+  //       }
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // });
+  // editbook = new FormData(editbook);
+  // console.log(editbook);
+  </script>

@@ -14,7 +14,7 @@ exports.createBookSchema = joi_1.default.object().keys({
 exports.updateBookSchema = joi_1.default.object().keys({
     name: joi_1.default.string().lowercase(),
     isPublished: joi_1.default.boolean(),
-    serialNumber: joi_1.default.boolean(),
+    serialNumber: joi_1.default.number(),
 });
 exports.registerSchema = joi_1.default.object().keys({
     author: joi_1.default.string().required(),

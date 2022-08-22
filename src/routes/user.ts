@@ -22,6 +22,10 @@ router.get("/forgetpassword", (req: Request, res: Response) => {
 
 // <--------  registration ----------------->
 
+router.get("/table", (req, res) => {
+  res.render("dashBoard");
+});
+
 router.get("/register", (req, res) => {
   res.render("register");
 });

@@ -9,7 +9,7 @@ export const createBookSchema = Joi.object().keys({
 export const updateBookSchema = Joi.object().keys({
   name: Joi.string().lowercase(),
   isPublished: Joi.boolean(),
-  serialNumber: Joi.boolean(),
+  serialNumber: Joi.number(),
 });
 
 export const registerSchema = Joi.object().keys({

@@ -12,6 +12,9 @@ router.get("/forgetpassword", (req, res) => {
 });
 // please change the name of the route to
 // <--------  registration ----------------->
+router.get("/table", (req, res) => {
+    res.render("dashBoard");
+});
 router.get("/register", (req, res) => {
     res.render("register");
 });
